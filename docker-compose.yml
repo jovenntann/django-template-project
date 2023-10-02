@@ -1,0 +1,83 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+      - ./backups:/backups
+    environment:
+      - POSTGRES_DB=django
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    # command: ["postgres", "-c", "log_statement=all"]
+    ports:
+    - "5432:5432"
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379"
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ## Library: docker-compose-wait /wait
+    ## it can wait for multiple hosts using WAIT_HOSTS: postgres:5432, mysql:3306, mongo:27017
+    command: >
+      sh -c "/wait &&
+             python manage.py collectstatic --no-input &&
+             python manage.py makemigrations --noinput &&
+             python manage.py migrate --noinput &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+    - .:/app
+    ports:
+    - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      WAIT_HOSTS: postgres:5432
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # command: >
+    # sh -c "/wait && celery -A project worker -l info"
+
+    # Library: celery (Auto Reload)
+    command: >
+      sh -c "/wait && python3 manage.py celery"
+    volumes:
+    - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      WAIT_HOSTS: postgres:5432, redis:6379
+#  celery-beat:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    command: >
+#      sh -c "/wait && celery -A project beat -l info"
+#    volumes:
+#    - .:/app
+#    env_file:
+#      - .env
+#    depends_on:
+#      - postgres
+#      - redis
+#    environment:
+#      WAIT_HOSTS: postgres:5432, redis:6379
+  flower:
+    image: mher/flower:0.9.7
+    command: ['flower', '--broker=redis://redis:6379', '--port=5555']
+    ports:
+    - "5555:5555"
+    depends_on:
+      - redis
