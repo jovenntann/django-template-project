@@ -20,6 +20,8 @@ aws ecr get-login-password --region us-east-1 --profile personal | docker login 
 ```
 docker build -t project-apple-repository .
 docker build --no-cache -t project-apple-repository .
+
+# For Mac M1
 docker buildx build --no-cache --platform linux/amd64 -t project-apple-repository .
 docker buildx build --platform linux/amd64 -t project-apple-repository .
 ```
