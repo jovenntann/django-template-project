@@ -13,9 +13,3 @@ WORKDIR /app
 COPY requirements.txt /app/
 RUN pip install -r requirements.txt
 COPY . /app/
-
-# Expose port 8000 (or the port your Django app is running on)
-EXPOSE 8000
-
-# Command to run the Django server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
