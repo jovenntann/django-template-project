@@ -83,17 +83,17 @@ jobs:
         ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
         IMAGE_TAG: latest
       run: |
-        sed -i 's/${{container_name}}/${{ env.CONTAINER_NAME }}/g' .aws/task-definition.json
-        sed -i 's/${{repository_url}}/${{ env.ECR_REPOSITORY }}/g' .aws/task-definition.json
-        sed -i 's/${{django_secret_key}}/${{ vars.DJANGO_SECRET_KEY }}/g' .aws/task-definition.json
-        sed -i 's/${{django_debug}}/${{ vars.DJANGO_DEBUG }}/g' .aws/task-definition.json
-        sed -i 's/${{django_allowed_hosts}}/${{ vars.DJANGO_ALLOWED_HOSTS }}/g' .aws/task-definition.json
-        sed -i 's/${{django_db_engine}}/${{ vars.DJANGO_DB_ENGINE }}/g' .aws/task-definition.json
-        sed -i 's/${{django_db_name}}/${{ secrets.DJANGO_DATABASE_NAME }}/g' .aws/task-definition.json
-        sed -i 's/${{django_db_user}}/${{ secrets.DJANGO_DATABASE_USER }}/g' .aws/task-definition.json
-        sed -i 's/${{django_db_pass}}/${{ secrets.DJANGO_DATABASE_PASS }}/g' .aws/task-definition.json
-        sed -i 's/${{django_db_host}}/${{ secrets.DJANGO_DATABASE_HOST }}/g' .aws/task-definition.json
-        sed -i 's/${{django_db_port}}/${{ vars.DJANGO_DATABASE_PORT }}/g' .aws/task-definition.json
+        sed -i 's/${CONTAINER_NAME}/${{ env.CONTAINER_NAME }}/g' .aws/task-definition.json
+        sed -i 's/${ECR_REPOSITORY}/${{ env.ECR_REPOSITORY }}/g' .aws/task-definition.json
+        sed -i 's/${DJANGO_SECRET_KEY}/${{ vars.DJANGO_SECRET_KEY }}/g' .aws/task-definition.json
+        sed -i 's/${DJANGO_DEBUG}/${{ vars.DJANGO_DEBUG }}/g' .aws/task-definition.json
+        sed -i 's/${DJANGO_ALLOWED_HOSTS}/${{ vars.DJANGO_ALLOWED_HOSTS }}/g' .aws/task-definition.json
+        sed -i 's/${DJANGO_DB_ENGINE}/${{ vars.DJANGO_DB_ENGINE }}/g' .aws/task-definition.json
+        sed -i 's/${DJANGO_DATABASE_NAME}/${{ secrets.DJANGO_DATABASE_NAME }}/g' .aws/task-definition.json
+        sed -i 's/${DJANGO_DATABASE_USER}/${{ secrets.DJANGO_DATABASE_USER }}/g' .aws/task-definition.json
+        sed -i 's/${DJANGO_DATABASE_PASSWORD}/${{ secrets.DJANGO_DATABASE_PASSWORD }}/g' .aws/task-definition.json
+        sed -i 's/${DJANGO_DATABASE_HOST}/${{ secrets.DJANGO_DATABASE_HOST }}/g' .aws/task-definition.json
+        sed -i 's/${DJANGO_DATABASE_PORT}/${{ vars.DJANGO_DATABASE_PORT }}/g' .aws/task-definition.json
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
