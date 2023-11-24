@@ -37,17 +37,9 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    environment: development
 
     steps:
-    - name: Set environment
-      id: environment
-      run: |
-        if [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
-          echo "ENVIRONMENT=development" >> $GITHUB_ENV
-        else
-          echo "ENVIRONMENT=production" >> $GITHUB_ENV
-        fi
-  
     - name: Checkout
       uses: actions/checkout@v3
 
