@@ -78,13 +78,11 @@ jobs:
 
     - name: Replace variables in task definition
       env:
-        CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
-        IMAGE_TAG: latest
+        REPOSITORY_URL: ${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:latest
       run: |
-        sed -i 's/${CONTAINER_NAME}/${{ env.CONTAINER_NAME }}/g' .aws/task-definition.json
-        sed -i 's/${ECR_REPOSITORY}/${{ env.ECR_REPOSITORY }}/g' .aws/task-definition.json
+        sed -i 's/${TASK_FAMILY_NAME}/${{ vars.TASK_FAMILY_NAME }}/g' .aws/task-definition.json
+        sed -i 's/${CONTAINER_NAME}/${{ vars.CONTAINER_NAME }}/g' .aws/task-definition.json
+        sed -i 's/${REPOSITORY_URL}/${{ env.REPOSITORY_URL }}/g' .aws/task-definition.json
         sed -i 's/${DJANGO_SECRET_KEY}/${{ vars.DJANGO_SECRET_KEY }}/g' .aws/task-definition.json
         sed -i 's/${DJANGO_DEBUG}/${{ vars.DJANGO_DEBUG }}/g' .aws/task-definition.json
         sed -i 's/${DJANGO_ALLOWED_HOSTS}/${{ vars.DJANGO_ALLOWED_HOSTS }}/g' .aws/task-definition.json
