@@ -80,18 +80,18 @@ jobs:
       env:
         REPOSITORY_URL: ${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:latest
       run: |
-        sed -i 's/${TASK_FAMILY_NAME}/${{ vars.TASK_FAMILY_NAME }}/g' .aws/task-definition.json
-        sed -i 's/${CONTAINER_NAME}/${{ vars.CONTAINER_NAME }}/g' .aws/task-definition.json
-        sed -i 's/${REPOSITORY_URL}/${{ env.REPOSITORY_URL }}/g' .aws/task-definition.json
-        sed -i 's/${DJANGO_SECRET_KEY}/${{ vars.DJANGO_SECRET_KEY }}/g' .aws/task-definition.json
-        sed -i 's/${DJANGO_DEBUG}/${{ vars.DJANGO_DEBUG }}/g' .aws/task-definition.json
-        sed -i 's/${DJANGO_ALLOWED_HOSTS}/${{ vars.DJANGO_ALLOWED_HOSTS }}/g' .aws/task-definition.json
-        sed -i 's/${DJANGO_DB_ENGINE}/${{ vars.DJANGO_DB_ENGINE }}/g' .aws/task-definition.json
-        sed -i 's/${DJANGO_DATABASE_NAME}/${{ secrets.DJANGO_DATABASE_NAME }}/g' .aws/task-definition.json
-        sed -i 's/${DJANGO_DATABASE_USER}/${{ secrets.DJANGO_DATABASE_USER }}/g' .aws/task-definition.json
-        sed -i 's/${DJANGO_DATABASE_PASSWORD}/${{ secrets.DJANGO_DATABASE_PASSWORD }}/g' .aws/task-definition.json
-        sed -i 's/${DJANGO_DATABASE_HOST}/${{ secrets.DJANGO_DATABASE_HOST }}/g' .aws/task-definition.json
-        sed -i 's/${DJANGO_DATABASE_PORT}/${{ vars.DJANGO_DATABASE_PORT }}/g' .aws/task-definition.json
+        sed -i 's|${TASK_FAMILY_NAME}|${{ vars.TASK_FAMILY_NAME }}|g' .aws/task-definition.json
+        sed -i 's|${CONTAINER_NAME}|${{ vars.CONTAINER_NAME }}|g' .aws/task-definition.json
+        sed -i 's|${REPOSITORY_URL}|${{ env.REPOSITORY_URL }}|g' .aws/task-definition.json
+        sed -i 's|${DJANGO_SECRET_KEY}|${{ vars.DJANGO_SECRET_KEY }}|g' .aws/task-definition.json
+        sed -i 's|${DJANGO_DEBUG}|${{ vars.DJANGO_DEBUG }}|g' .aws/task-definition.json
+        sed -i 's|${DJANGO_ALLOWED_HOSTS}|${{ vars.DJANGO_ALLOWED_HOSTS }}|g' .aws/task-definition.json
+        sed -i 's|${DJANGO_DB_ENGINE}|${{ vars.DJANGO_DB_ENGINE }}|g' .aws/task-definition.json
+        sed -i 's|${DJANGO_DATABASE_NAME}|${{ secrets.DJANGO_DATABASE_NAME }}|g' .aws/task-definition.json
+        sed -i 's|${DJANGO_DATABASE_USER}|${{ secrets.DJANGO_DATABASE_USER }}|g' .aws/task-definition.json
+        sed -i 's|${DJANGO_DATABASE_PASSWORD}|${{ secrets.DJANGO_DATABASE_PASSWORD }}|g' .aws/task-definition.json
+        sed -i 's|${DJANGO_DATABASE_HOST}|${{ secrets.DJANGO_DATABASE_HOST }}|g' .aws/task-definition.json
+        sed -i 's|${DJANGO_DATABASE_PORT}|${{ vars.DJANGO_DATABASE_PORT }}|g' .aws/task-definition.json
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
