@@ -23,6 +23,6 @@ def health_check_view(request):
     content = {
         "status_code": 200,
         "status": "OK",
-        "version": "0.2"
+        "version": "0.3"
     }
     return Response(content)
