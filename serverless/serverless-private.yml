@@ -1,4 +1,4 @@
-service: aws-python-flask-api
+service: aws-python-flask-api-private
 
 frameworkVersion: '3'
 
@@ -7,7 +7,7 @@ custom:
     app: app.app
   customDomain:
     domainName: sls.tappy.com.ph
-    basePath: ${opt:stage, 'dev'}
+    basePath: ${opt:stage, 'dev'}/private
     stage: $default
     createRoute53Record: false
     certificateArn: 'arn:aws:acm:us-east-1:672256646492:certificate/44e7bc1a-690a-455a-a742-c33fe03dac09'
