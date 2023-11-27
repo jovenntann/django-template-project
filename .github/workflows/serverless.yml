@@ -9,10 +9,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: development
+    defaults:
+      run:
+        working-directory: serverless
     steps:
       - uses: actions/checkout@v3
-      - name: Change to serverless directory
-        run: cd serverless
       - uses: actions/setup-python@v3
         with:
           python-version: "3.9"
@@ -29,8 +30,6 @@ jobs:
           serverless plugin install -n serverless-wsgi
           serverless plugin install -n serverless-python-requirements
           serverless plugin install -n serverless-domain-manager
-      - name: Install serverless wsgi
-        run: serverless plugin install -n serverless-wsgi
       - name: serverless package
         run: serverless package
       - name: Deploy to Lambda
