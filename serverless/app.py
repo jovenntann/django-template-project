@@ -10,7 +10,7 @@ def hello_from_root():
 
 @app.route("/hello")
 def hello():
-    return jsonify(message='Hello from Serverless!!')
+    return jsonify(message='Hello from Serverless Deployment!')
 
 
 @app.errorhandler(404)
