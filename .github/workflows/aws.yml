@@ -31,6 +31,7 @@ on:
     branches: [ "master" ]
     paths-ignore:
       - 'serverless/**'
+      - '.github/workflows/serverless.yml'
 
 permissions:
   contents: read

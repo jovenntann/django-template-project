@@ -1,30 +1,42 @@
-# name: Deploy master branch
+name: Deploy the code
+on:
+  push:
+    paths:
+      - 'serverless/**'
+    branches:
+      - main
+  pull_request:
+    paths:
+      - 'serverless/**'
+    branches:
+      - main
 
-# on:
-#   push:
-#     branches:
-#       - master
-
-# jobs:
-#   deploy:
-#     name: deploy
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         node-version: [18.x]
-#     steps:
-#     - uses: actions/checkout@v3
-#     - name: Use Node.js ${{ matrix.node-version }}
-#       uses: actions/setup-node@v3
-#       with:
-#         node-version: ${{ matrix.node-version }}
-#     - run: npm ci
-#     - name: serverless deploy
-#       uses: serverless/github-action@v3.2
-#       with:
-#         args: deploy
-#       env:
-#         SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
-#         # or if using AWS credentials directly
-#         # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#         # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Change to serverless directory
+        run: cd serverless
+      - uses: actions/setup-python@v3
+        with:
+          python-version: "3.9"
+      - uses: aws-actions/setup-sam@v2
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+      - name: Install Serverless Framework
+        run: npm i -g serverless
+      - name: Install plugins
+        run: |
+          serverless plugin install -n serverless-wsgi
+          serverless plugin install -n serverless-python-requirements
+          serverless plugin install -n serverless-domain-manager
+      - name: Install serverless wsgi
+        run: serverless plugin install -n serverless-wsgi
+      - name: serverless package
+        run: serverless package
+      - name: Deploy to Lambda
+        run: serverless deploy
