@@ -1,15 +1,9 @@
-name: Deploy the code
+name: Deploy Serverless
 on:
   push:
+    branches: [ "master" ]
     paths:
       - 'serverless/**'
-    branches:
-      - main
-  pull_request:
-    paths:
-      - 'serverless/**'
-    branches:
-      - main
 
 jobs:
   build:
