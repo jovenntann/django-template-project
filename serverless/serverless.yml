@@ -17,7 +17,6 @@ custom:
 provider:
   name: aws
   runtime: python3.9
-  profile: personal
 
 functions:
   api:
